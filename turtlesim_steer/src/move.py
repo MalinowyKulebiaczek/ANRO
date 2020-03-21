@@ -29,7 +29,7 @@ def move():
     
     while not rospy.is_shutdown():
         
-        buf=getKey()
+        buf=input()
         if buf=='w':
             vel_msg.linear.x = 2.0
         elif buf=='s':
