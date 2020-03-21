@@ -26,38 +26,38 @@ def move():
     #nie zatrzymywal - nie wiem dlaczego w tej wersji zolw 
     #zatrzymuje sie bez tej linijki i bez linijki rate.sleep(), ktora jest nizej   
     #rate = rospy.Rate(10)  
-	
+    
     while not rospy.is_shutdown():
         
-	buf=getKey()
-    	if buf=='w':
-        	vel_msg.linear.x = 2.0
-    	elif buf=='s':
-        	vel_msg.linear.x = -2.0
+        buf=getKey()
+        if buf=='w':
+            vel_msg.linear.x = 2.0
+        elif buf=='s':
+            vel_msg.linear.x = -2.0
         elif buf == 'a':
-        	vel_msg.angular.z = 2.0        
-    	elif buf == 'd':
-        	vel_msg.angular.z = -2.0
-	#Break if ctrl+C (pozyczone z teleop_twist_keyboard)	
-	elif (buf == '\x03'):
-                break
+            vel_msg.angular.z = 2.0        
+        elif buf == 'd':
+            vel_msg.angular.z = -2.0
+        #Break if ctrl+C (pozyczone z teleop_twist_keyboard)    
+        elif (buf == '\x03'):
+            break
 
-     	#Publish the velocity
+         #Publish the velocity
         velocity_publisher.publish(vel_msg)        
-	
-	#rate.sleep()  
-	#Zeruje wartosci predkosci, zeby w przyszlej petli na pewno obie poczatkowe predkosci byly zerowe 
-	vel_msg.linear.x = 0
-    	vel_msg.angular.z = 0
-	
-	
+    
+        #rate.sleep()  
+        #Zeruje wartosci predkosci, zeby w przyszlej petli na pewno obie poczatkowe predkosci byly zerowe 
+        vel_msg.linear.x = 0
+        vel_msg.angular.z = 0
+    
+    
 
 if __name__ == '__main__':
     settings = termios.tcgetattr(sys.stdin)     #POZYCZONE Z teleop_twist_keyboard - bez tego nie dziala
     try:
         #Testing our function
-	
-	printInstruction()
+        printInstruction()
         move()
-    except rospy.ROSInterruptException: pass 
-	#termios.tcsetattr(sys.stdin, termios.TCSADRAIN, settings)	#ROWNIEZ POZYCZONE - myslalem, ze to istotna  										#linijka, ale okazalo sie, ze dziala tez ze zwyklym 'pass'
+    except rospy.ROSInterruptException:
+        pass 
+        #termios.tcsetattr(sys.stdin, termios.TCSADRAIN, settings)    #ROWNIEZ POZYCZONE - myslalem, ze to istotna                                          #linijka, ale okazalo sie, ze dziala tez ze zwyklym 'pass'
