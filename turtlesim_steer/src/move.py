@@ -20,7 +20,7 @@ def printInstruction(steeringKeys):
     print(steeringKeys[1], "- rotate left")
     print(steeringKeys[3], "- rotate right")
 
-#Funkcja wzieta z teleop_twist_keyboard. Dzieki niej nie trzeba zatwierdzac enterem. Nie pytajcie jak dziala, bo nie wiem
+#Funkcja wzieta z teleop_twist_keyboard. Dzieki niej nie trzeba zatwierdzac enterem.
 def getKey():
     tty.setraw(sys.stdin.fileno())
     select.select([sys.stdin], [], [], 0)
@@ -62,12 +62,11 @@ def move(steeringKeys):
     
 
 if __name__ == '__main__':
-    settings = termios.tcgetattr(sys.stdin)     #POZYCZONE Z teleop_twist_keyboard - bez tego nie dziala
+    settings = termios.tcgetattr(sys.stdin)     #POZYCZONE Z teleop_twist_keyboard
     try:
     #Testing our function
         steeringKeys=initialise()
         printInstruction(steeringKeys)
         move(steeringKeys)
     except rospy.ROSInterruptException: 
-        pass 
-    #termios.tcsetattr(sys.stdin, termios.TCSADRAIN, settings)    #ROWNIEZ POZYCZONE - myslalem, ze to istotna
+        pass
