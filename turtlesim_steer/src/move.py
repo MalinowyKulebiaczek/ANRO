@@ -4,15 +4,6 @@ import rospy
 import sys, select, termios, tty
 from geometry_msgs.msg import Twist
 
-<<<<<<< HEAD
-move_up = 'w'
-move_down = 's'
-move_left = 'a'
-move_right = 'd'
-
-def printInstruction():
-    print("Let's move your turtle. Use WASD buttons to steer\n-------------------")
-=======
 def initialise():
     if rospy.has_param('steering_keys_list'):
         keys=rospy.get_param("/steering_keys_list")
@@ -28,7 +19,6 @@ def printInstruction(steeringKeys):
     print(steeringKeys[2], "- move backwards")
     print(steeringKeys[1], "- rotate left")
     print(steeringKeys[3], "- rotate right")
->>>>>>> test_rafal
 
 #Funkcja wzieta z teleop_twist_keyboard. Dzieki niej nie trzeba zatwierdzac enterem. Nie pytajcie jak dziala, bo nie wiem
 def getKey():
@@ -47,15 +37,6 @@ def move(steeringKeys):
     while not rospy.is_shutdown():
         
         buf=getKey()
-<<<<<<< HEAD
-        if buf == move_up:
-            vel_msg.linear.x = 2.0
-        elif buf == move_down:
-            vel_msg.linear.x = -2.0
-        elif buf == move_left:
-            vel_msg.angular.z = 2.0        
-        elif buf == move_right:
-=======
         if buf==steeringKeys[0]:
             vel_msg.linear.x = 2.0
         elif buf==steeringKeys[2]:
@@ -63,7 +44,6 @@ def move(steeringKeys):
         elif buf ==steeringKeys[1]:
             vel_msg.angular.z = 2.0        
         elif buf == steeringKeys[3]:
->>>>>>> test_rafal
             vel_msg.angular.z = -2.0
         #Break if ctrl+C (pozyczone z teleop_twist_keyboard)    
         elif (buf == '\x03'):
@@ -84,26 +64,10 @@ def move(steeringKeys):
 if __name__ == '__main__':
     settings = termios.tcgetattr(sys.stdin)     #POZYCZONE Z teleop_twist_keyboard - bez tego nie dziala
     try:
-<<<<<<< HEAD
-        #Testing our function
-        if rospy.has_param('/move_up'):
-            move_up = rospy.get_param('/move_up')
-        if rospy.has_param('/move_down'):
-            move_down = rospy.get_param('/move_down')
-        if rospy.has_param('/move_left'):
-            move_left = rospy.get_param('/move_left')
-        if rospy.has_param('/move_right'):
-            move_right = rospy.get_param('/move_right')
-        
-        printInstruction()
-        move()
-    except rospy.ROSInterruptException:
-=======
     #Testing our function
         steeringKeys=initialise()
         printInstruction(steeringKeys)
         move(steeringKeys)
     except rospy.ROSInterruptException: 
->>>>>>> test_rafal
         pass 
-    #termios.tcsetattr(sys.stdin, termios.TCSADRAIN, settings)    #ROWNIEZ POZYCZONE - myslalem, ze to istotna                                          #linijka, ale okazalo sie, ze dziala tez ze zwyklym 'pass'
+    #termios.tcsetattr(sys.stdin, termios.TCSADRAIN, settings)    #ROWNIEZ POZYCZONE - myslalem, ze to istotna
