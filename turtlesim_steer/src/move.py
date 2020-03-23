@@ -4,6 +4,7 @@ import rospy
 import sys, select, termios, tty
 from geometry_msgs.msg import Twist
 
+<<<<<<< HEAD
 move_up = 'w'
 move_down = 's'
 move_left = 'a'
@@ -11,6 +12,23 @@ move_right = 'd'
 
 def printInstruction():
     print("Let's move your turtle. Use WASD buttons to steer\n-------------------")
+=======
+def initialise():
+    if rospy.has_param('steering_keys_list'):
+        keys=rospy.get_param("/steering_keys_list")
+        print("Succesful key parameters initialisation")
+    else:
+        print("There is no parameter called '\steering_keys_list'. Proceeding with default steering settings")
+        keys=['w', 'a', 's', 'd']
+    return keys
+def printInstruction(steeringKeys):
+    print("Let's move your turtle!")
+    print("Steering:")
+    print(steeringKeys[0], "- move forward")
+    print(steeringKeys[2], "- move backwards")
+    print(steeringKeys[1], "- rotate left")
+    print(steeringKeys[3], "- rotate right")
+>>>>>>> test_rafal
 
 #Funkcja wzieta z teleop_twist_keyboard. Dzieki niej nie trzeba zatwierdzac enterem. Nie pytajcie jak dziala, bo nie wiem
 def getKey():
@@ -20,20 +38,16 @@ def getKey():
     termios.tcsetattr(sys.stdin, termios.TCSADRAIN, settings)
     return key
 
-def move():
+def move(steeringKeys):
     # Starts a new node
-    rospy.init_node('robot_cleaner', anonymous=True)
+    rospy.init_node('robot_steer', anonymous=True)
     velocity_publisher = rospy.Publisher('/turtle1/cmd_vel', Twist, queue_size=10)
     vel_msg = Twist()
-    
-    #wydaje mi sie, ze jak wczesniej zamiast funkcji getKey uzywalem zwyklego raw_input() i nie bylo tej linijki, to zolw sie
-    #nie zatrzymywal - nie wiem dlaczego w tej wersji zolw 
-    #zatrzymuje sie bez tej linijki i bez linijki rate.sleep(), ktora jest nizej   
-    #rate = rospy.Rate(10)  
     
     while not rospy.is_shutdown():
         
         buf=getKey()
+<<<<<<< HEAD
         if buf == move_up:
             vel_msg.linear.x = 2.0
         elif buf == move_down:
@@ -41,6 +55,15 @@ def move():
         elif buf == move_left:
             vel_msg.angular.z = 2.0        
         elif buf == move_right:
+=======
+        if buf==steeringKeys[0]:
+            vel_msg.linear.x = 2.0
+        elif buf==steeringKeys[2]:
+            vel_msg.linear.x = -2.0
+        elif buf ==steeringKeys[1]:
+            vel_msg.angular.z = 2.0        
+        elif buf == steeringKeys[3]:
+>>>>>>> test_rafal
             vel_msg.angular.z = -2.0
         #Break if ctrl+C (pozyczone z teleop_twist_keyboard)    
         elif (buf == '\x03'):
@@ -49,7 +72,7 @@ def move():
             continue
 
          #Publish the velocity
-        velocity_publisher.publish(vel_msg)        
+        velocity_publisher.publish(vel_msg)
     
         #rate.sleep()  
         #Zeruje wartosci predkosci, zeby w przyszlej petli na pewno obie poczatkowe predkosci byly zerowe 
@@ -61,6 +84,7 @@ def move():
 if __name__ == '__main__':
     settings = termios.tcgetattr(sys.stdin)     #POZYCZONE Z teleop_twist_keyboard - bez tego nie dziala
     try:
+<<<<<<< HEAD
         #Testing our function
         if rospy.has_param('/move_up'):
             move_up = rospy.get_param('/move_up')
@@ -74,5 +98,12 @@ if __name__ == '__main__':
         printInstruction()
         move()
     except rospy.ROSInterruptException:
+=======
+    #Testing our function
+        steeringKeys=initialise()
+        printInstruction(steeringKeys)
+        move(steeringKeys)
+    except rospy.ROSInterruptException: 
+>>>>>>> test_rafal
         pass 
-        #termios.tcsetattr(sys.stdin, termios.TCSADRAIN, settings)    #ROWNIEZ POZYCZONE - myslalem, ze to istotna                                          #linijka, ale okazalo sie, ze dziala tez ze zwyklym 'pass'
+    #termios.tcsetattr(sys.stdin, termios.TCSADRAIN, settings)    #ROWNIEZ POZYCZONE - myslalem, ze to istotna                                          #linijka, ale okazalo sie, ze dziala tez ze zwyklym 'pass'
