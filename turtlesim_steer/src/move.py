@@ -4,6 +4,10 @@ import rospy
 import sys, select, termios, tty
 from geometry_msgs.msg import Twist
 
+move_up = 'w'
+move_down = 's'
+move_left = 'a'
+move_right = 'd'
 
 def printInstruction():
     print("Let's move your turtle. Use WASD buttons to steer\n-------------------")
@@ -30,17 +34,19 @@ def move():
     while not rospy.is_shutdown():
         
         buf=getKey()
-        if buf=='w':
+        if buf == move_up:
             vel_msg.linear.x = 2.0
-        elif buf=='s':
+        elif buf == move_down:
             vel_msg.linear.x = -2.0
-        elif buf == 'a':
+        elif buf == move_left:
             vel_msg.angular.z = 2.0        
-        elif buf == 'd':
+        elif buf == move_right:
             vel_msg.angular.z = -2.0
         #Break if ctrl+C (pozyczone z teleop_twist_keyboard)    
         elif (buf == '\x03'):
             break
+        else:
+            continue
 
          #Publish the velocity
         velocity_publisher.publish(vel_msg)        
@@ -56,6 +62,15 @@ if __name__ == '__main__':
     settings = termios.tcgetattr(sys.stdin)     #POZYCZONE Z teleop_twist_keyboard - bez tego nie dziala
     try:
         #Testing our function
+        if rospy.has_param('/move_up'):
+            move_up = rospy.get_param('/move_up')
+        if rospy.has_param('/move_down'):
+            move_down = rospy.get_param('/move_down')
+        if rospy.has_param('/move_left'):
+            move_left = rospy.get_param('/move_left')
+        if rospy.has_param('/move_right'):
+            move_right = rospy.get_param('/move_right')
+        
         printInstruction()
         move()
     except rospy.ROSInterruptException:
