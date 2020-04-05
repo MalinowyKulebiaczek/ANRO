@@ -14,7 +14,6 @@ z_axis = (0,0,1)
 
 with open('urdf_parameters.yaml', 'w') as file:
     for joint in dhJson:
-        #joint = json.loads(json.dumps(joint))  #skopiowane, nie wiem po co to jest, to nic nie robi
         name = joint['name']
         a = joint['a']
         d = joint['d']
@@ -34,5 +33,5 @@ with open('urdf_parameters.yaml', 'w') as file:
         file.write(name + ":\n")
         file.write("  j_xyz: "+str(x)+" "+str(y)+" "+str(z)+"\n")
         file.write("  j_rpy: "+str(roll)+' '+str(pitch)+' '+str(yaw)+'\n')
-        file.write("  l_xyz: "+str(0)+' '+str(0)+' '+str(float(d)*(-0.5))+'\n')
-        file.write("  l_len: "+str(d)+'\n')
+        file.write("  l_xyz: "+str(float(a)*(0.5))+' '+str(0)+' '+str(0)+'\n')
+        file.write("  l_len: "+str(a)+'\n')
