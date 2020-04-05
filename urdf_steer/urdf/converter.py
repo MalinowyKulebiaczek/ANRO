@@ -1,3 +1,6 @@
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
+
 import json
 
 from tf.transformations import *
@@ -31,7 +34,5 @@ with open('urdf_parameters.yaml', 'w') as file:
         file.write(name + ":\n")
         file.write("  j_xyz: "+str(x)+" "+str(y)+" "+str(z)+"\n")
         file.write("  j_rpy: "+str(roll)+' '+str(pitch)+' '+str(yaw)+'\n')
-        #nie rozumiem co to są te parametry 'l'
         file.write("  l_xyz: "+str(0)+' '+str(0)+' '+str(float(d)*(-0.5))+'\n')
-        file.write("  l_rpy: "+str(0)+' '+str(0)+' '+str(0)+'\n')
         file.write("  l_len: "+str(d)+'\n')
