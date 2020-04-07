@@ -48,9 +48,9 @@
     <link name="link_3">
         <visual>
             <geometry>
-                <box size="${l_width} ${l_width} 1"/>
+                <box size="${l_width} ${l_width} ${params['hand']['l_len']}"/>
             </geometry>
-            <origin xyz="0.5 0 0" rpy="0 1.57079632679 0"/>
+            <origin xyz="${params['hand']['l_xyz']}" rpy="0 1.57079632679 0"/>
             <material name="blue"/>
         </visual>
     </link>
@@ -60,7 +60,7 @@
             <geometry>
                 <box size="${l_width} ${l_width} ${l_width}"/>
             </geometry>
-            <origin xyz="1 0 0" rpy="0 0 0"/>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
             <material name="red"/>
         </visual>
     </link>       
@@ -86,7 +86,7 @@
     <joint name="link3_to_hand" type="fixed">
         <parent link="link_3"/>
         <child link="hand"/>
-        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <origin xyz="${params['hand']['j_xyz']}" rpy="${params['hand']['j_rpy']}"/>
     </joint>
 
 </robot>
