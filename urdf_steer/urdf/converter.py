@@ -6,6 +6,25 @@ import rospy
 
 from tf.transformations import *
 
+def get_parameters(param_name):
+    if rospy.has_param(param_name):
+        ros_param_name='/'+param_name
+        param_value=rospy.get_param(ros_param_name)
+        param_value_string=str(param_value)
+        
+        if param_value>=0 and isinstance(param_value, (int, float)):
+            print("Succesful initialisation of parameter: " + ros_param_name)
+            return True
+        else:
+            
+            print("Unsuccesful initialisation of parameter: " + ros_param_name)
+            print("Length value must be a positive number")
+            return False
+    else:
+        print("There is no parameter called /" + param_name + ". Proceeding with default length value.")
+        return False
+
+    
 with open('dh_parameters.json', 'r') as file:
     dhJson= json.loads(file.read())
 
@@ -21,11 +40,11 @@ with open('urdf_parameters.yaml', 'w') as file:
         alpha = joint['al']
         theta = joint['th']
 
-	if name == 'i3' and rospy.has_param('dlugosc1'):
+        if name == 'i3' and get_parameters('dlugosc1'):
         	a = rospy.get_param("/dlugosc1")
 
-	if name == 'hand' and rospy.has_param('dlugosc2'):
-        	a = rospy.get_param("/dlugosc2")
+        if name == 'hand' and get_parameters('dlugosc2'):
+            a = rospy.get_param("/dlugosc2")
         
         matrixD= translation_matrix( (0, 0, d) )
         matrixTheta = rotation_matrix( theta, z_axis )
@@ -42,3 +61,4 @@ with open('urdf_parameters.yaml', 'w') as file:
         file.write("  j_rpy: "+str(roll)+' '+str(pitch)+' '+str(yaw)+'\n')
         file.write("  l_xyz: "+str(float(a)*(0.5))+' '+str(0)+' '+str(0)+'\n')
         file.write("  l_len: "+str(a)+'\n')
+        
