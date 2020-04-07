@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 
 import json
+import rospy
 
 from tf.transformations import *
 
@@ -19,6 +20,12 @@ with open('urdf_parameters.yaml', 'w') as file:
         d = joint['d']
         alpha = joint['al']
         theta = joint['th']
+
+	if name == 'i3' and rospy.has_param('dlugosc1'):
+        	a = rospy.get_param("/dlugosc1")
+
+	if name == 'hand' and rospy.has_param('dlugosc2'):
+        	a = rospy.get_param("/dlugosc2")
         
         matrixD= translation_matrix( (0, 0, d) )
         matrixTheta = rotation_matrix( theta, z_axis )
