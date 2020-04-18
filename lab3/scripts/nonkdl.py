@@ -6,7 +6,6 @@ import rospy
 import rospkg
 from sensor_msgs.msg import JointState
 from tf.transformations import *
-from visualization_msgs.msg import Marker
 from geometry_msgs.msg import PoseStamped
 
 def get_parameters(param_name):
@@ -34,7 +33,6 @@ def callback(data):
     
     i=0
     for joint in dh_file:
-        #one_piece= json.loads(json.dumps(joint))
         name = joint['name']
         a = joint["a"]
         d = joint["d"]
@@ -73,8 +71,8 @@ def callback(data):
     non_kdl_pose.pose.orientation.y = qy
     non_kdl_pose.pose.orientation.z = qz
     non_kdl_pose.pose.orientation.w = qw
-    pub.publish(non_kdl_pose)
 
+    pub.publish(non_kdl_pose)
     #print(data)
 
 if __name__ == '__main__':
