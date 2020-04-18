@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <robot name="firstRobot" xmlns:xacro="http://www.ros.org/wiki/xacro">
-    <xacro:property name="params" value="${load_yaml('../urdf_parameters.yaml')}"/>
+    <xacro:property name="params" value="${load_yaml('$(find lab3)/urdf_parameters.yaml')}"/>
     <xacro:property name="l_width" value="0.1"/>
  
     <material name="red">
