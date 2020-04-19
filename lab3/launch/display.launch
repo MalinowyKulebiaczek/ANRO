@@ -1,6 +1,6 @@
 <launch>
 
-  <arg name="model" default="$(find urdf_tutorial)/urdf/01-myfirst.urdf"/>
+  <arg name="model" default="robot.urdf"/>
   <arg name="gui" default="true" />
   <arg name="rvizconfig" default="$(find lab3)/rviz/both_config.rviz" />
 
