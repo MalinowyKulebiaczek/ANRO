@@ -65,27 +65,27 @@
         </visual>
     </link>    
 
-    <joint name="base_to_link1" type="continuous">
+    <joint name="base_to_link1" type="revolute">
         <parent link="base_link"/>
         <child link="link_1"/>
         <origin xyz="${params['i1']['j_xyz']}" rpy="${params['i1']['j_rpy']}"/>
         <axis xyz="0 0 1"/>
-        <limit effort="1000.0" lower="-1" upper="0" velocity="1"/>
+        <limit effort="1000.0" lower="-1.57079632679" upper="1.57079632679" velocity="1"/>
     </joint>
 
-    <joint name="link1_to_link2" type="continuous">
+    <joint name="link1_to_link2" type="revolute">
         <parent link="link_1"/>
         <child link="link_2"/>
         <origin xyz="${params['i2']['j_xyz']}" rpy="${params['i2']['j_rpy']}"/>
         <axis xyz="0 0 1"/>
-        <limit effort="1000.0" lower="-1" upper="0" velocity="1"/>
+        <limit effort="1000.0" lower="-1.57079632679" upper="1.57079632679" velocity="1"/>
     </joint>
 
-    <joint name="link2_to_link3" type="continuous">
+    <joint name="link2_to_link3" type="revolute">
         <parent link="link_2"/>
         <child link="link_3"/>
         <origin xyz="${params['i3']['j_xyz']}" rpy="${params['i3']['j_rpy']}"/>
-        <limit effort="1000.0" lower="-1" upper="0" velocity="1"/>
+        <limit effort="1000.0" lower="-1.57079632679" upper="0" velocity="1"/>
         <axis xyz="0 0 1"/>
     </joint>
 
