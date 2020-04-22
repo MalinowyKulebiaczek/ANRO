@@ -62,12 +62,30 @@ def callback(data):
     jointDisplacement = PyKDL.JntArray(kdl_chain.getNrOfJoints())
     
     #joint displacements including restrictions
-    jointDisplacement[0] = max(restrictions[0]['backward'], data.position[0])
-    jointDisplacement[0] = min(restrictions[0]['forward'], jointDisplacement[0])
-    jointDisplacement[1] = max(restrictions[1]['backward'], data.position[1])
-    jointDisplacement[1] = min(restrictions[1]['forward'], jointDisplacement[1])
-    jointDisplacement[2] = max(restrictions[2]['backward'], data.position[2])
-    jointDisplacement[2] = min(restrictions[2]['forward'], jointDisplacement[2])
+    jointDisplacement[0] = data.position[0]
+    jointDisplacement[1] = data.position[1]
+    jointDisplacement[2] = data.position[2]
+
+    if(data.position[0] < restrictions[0]['backward']):
+        jointDisplacement[0] = restrictions[0]['backward']
+        rospy.logerr("Pozycja robota poza wartościami ograniczającymi!")
+    elif(data.position[0] > restrictions[0]['forward']):
+        jointDisplacement[0] = restrictions[0]['forward']
+        rospy.logerr("Pozycja robota poza wartościami ograniczającymi!")
+
+    elif(data.position[1] < restrictions[1]['backward']):
+        jointDisplacement[1] = restrictions[1]['backward']
+        rospy.logerr("Pozycja robota poza wartościami ograniczającymi!")
+    elif(data.position[1] > restrictions[1]['forward']):
+        jointDisplacement[1] = restrictions[1]['forward']
+        rospy.logerr("Pozycja robota poza wartościami ograniczającymi!")
+
+    elif(data.position[2] < restrictions[2]['backward']):
+        jointDisplacement[2] = restrictions[2]['backward']
+        rospy.logerr("Pozycja robota poza wartościami ograniczającymi!")
+    elif(data.position[2] > restrictions[2]['forward']):
+        jointDisplacement[2] = restrictions[2]['forward']
+        rospy.logerr("Pozycja robota poza wartościami ograniczającymi!")
 
     f_k_solver = PyKDL.ChainFkSolverPos_recursive(kdl_chain)
 
