@@ -27,9 +27,11 @@ def get_parameters(param_name):
         return False
 
 
+
 def callback(data):
     
     main_matrix = translation_matrix((0, 0, 0));
+    
     
     i=0
     for joint in dh_file:
@@ -37,7 +39,8 @@ def callback(data):
         a = joint["a"]
         d = joint["d"]
         al = joint["al"]
-        th = joint["th"]
+        th=joint['th']
+        
 
         if name == 'i3' and get_parameters('dlugosc1'):
         	a = rospy.get_param("/dlugosc1")
@@ -47,7 +50,17 @@ def callback(data):
 
         matrixD = translation_matrix((0, 0, d))
         if name != 'hand':
-            matrixTheta = rotation_matrix(th+data.position[i], z_axis)
+            pos=data.position[i]
+            if i>=0:
+                if restrictions[i]['backward']>pos:
+                    pos = restrictions[i]['backward']
+                    warn_string="Przekroczono ograniczenie dolne dla stawu o numerze: "+str((i+1))
+                    rospy.logerr(warn_string)
+                elif restrictions[i]['forward']<pos:
+                    pos = restrictions[i]['forward']
+                    warn_string="Przekroczono ograniczenie gorne dla stawu o numerze: "+str((i+1))
+                    rospy.logerr(warn_string)
+            matrixTheta = rotation_matrix(th+pos, z_axis)
         else:
             matrixTheta = rotation_matrix(th, z_axis)
         matrixA = translation_matrix((a, 0, 0))
@@ -85,10 +98,15 @@ if __name__ == '__main__':
     
     rospy.init_node('NONKDL_DKIN', anonymous=False)
     dh_file ={}
-
+    restr_file={}
+    
     with open(rospack.get_path('lab3') + '/dh_parameters.json', 'r') as file:
         dh_file= json.loads(file.read())
-
+    
+    with open(rospack.get_path('lab3') + '/restrictions.json', 'r') as file:
+        restrictions= json.loads(file.read())
+    
+    
     pub = rospy.Publisher('NoKdlAxes', PoseStamped, queue_size=10)
     rospy.Subscriber("joint_states", JointState , callback)
     
