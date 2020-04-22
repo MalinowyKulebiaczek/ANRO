@@ -54,11 +54,11 @@ def callback(data):
             if i>=0:
                 if restrictions[i]['backward']>pos:
                     pos = restrictions[i]['backward']
-                    warn_string="Przekroczono ograniczenie dolne dla stawu o numerze: "+str((i+1))
+                    warn_string="[NONKDL] Przekroczono ograniczenie dolne stawu o numerze: "+str(i+1)
                     rospy.logerr(warn_string)
                 elif restrictions[i]['forward']<pos:
                     pos = restrictions[i]['forward']
-                    warn_string="Przekroczono ograniczenie gorne dla stawu o numerze: "+str((i+1))
+                    warn_string="[NONKDL] Przekroczono ograniczenie gorne stawu o numerze: "+str(i+1)
                     rospy.logerr(warn_string)
             matrixTheta = rotation_matrix(th+pos, z_axis)
         else:

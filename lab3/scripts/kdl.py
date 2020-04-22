@@ -68,24 +68,24 @@ def callback(data):
 
     if(data.position[0] < restrictions[0]['backward']):
         jointDisplacement[0] = restrictions[0]['backward']
-        rospy.logerr("Pozycja robota poza wartościami ograniczającymi!")
+        rospy.logerr("[KDL] Przekroczono ograniczenie dolne stawu o numerze: 1")
     elif(data.position[0] > restrictions[0]['forward']):
         jointDisplacement[0] = restrictions[0]['forward']
-        rospy.logerr("Pozycja robota poza wartościami ograniczającymi!")
+        rospy.logerr("[KDL] Przekroczono ograniczenie gorne stawu o numerze: 1")
 
-    elif(data.position[1] < restrictions[1]['backward']):
+    if(data.position[1] < restrictions[1]['backward']):
         jointDisplacement[1] = restrictions[1]['backward']
-        rospy.logerr("Pozycja robota poza wartościami ograniczającymi!")
+        rospy.logerr("[KDL] Przekroczono ograniczenie dolne stawu o numerze: 2")
     elif(data.position[1] > restrictions[1]['forward']):
         jointDisplacement[1] = restrictions[1]['forward']
-        rospy.logerr("Pozycja robota poza wartościami ograniczającymi!")
+        rospy.logerr("[KDL] Przekroczono ograniczenie gorne stawu o numerze: 2")
 
-    elif(data.position[2] < restrictions[2]['backward']):
+    if(data.position[2] < restrictions[2]['backward']):
         jointDisplacement[2] = restrictions[2]['backward']
-        rospy.logerr("Pozycja robota poza wartościami ograniczającymi!")
+        rospy.logerr("[KDL] Przekroczono ograniczenie dolne stawu o numerze: 3")
     elif(data.position[2] > restrictions[2]['forward']):
         jointDisplacement[2] = restrictions[2]['forward']
-        rospy.logerr("Pozycja robota poza wartościami ograniczającymi!")
+        rospy.logerr("[KDL] Przekroczono ograniczenie gorne stawu o numerze: 3")
 
     f_k_solver = PyKDL.ChainFkSolverPos_recursive(kdl_chain)
 
