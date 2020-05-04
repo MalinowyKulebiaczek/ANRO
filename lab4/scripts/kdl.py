@@ -117,10 +117,10 @@ if __name__ == '__main__':
     dh_file ={}
     restrictions = {}
 
-    with open(rospack.get_path('lab3') + '/dh_parameters.json', 'r') as file:
+    with open(rospack.get_path('lab4') + '/dh_parameters.json', 'r') as file:
         dh_file= json.loads(file.read())
 
-    with open(rospack.get_path('lab3') + '/restrictions.json', 'r') as file:
+    with open(rospack.get_path('lab4') + '/restrictions.json', 'r') as file:
         restrictions = json.loads(file.read())
 
     pub = rospy.Publisher('KdlAxes', PoseStamped, queue_size=10)

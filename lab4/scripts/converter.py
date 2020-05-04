@@ -27,14 +27,14 @@ def get_parameters(param_name):
 
 rospack = rospkg.RosPack()
     
-with open(rospack.get_path('lab3') + '/dh_parameters.json', 'r') as file:
+with open(rospack.get_path('lab4') + '/dh_parameters.json', 'r') as file:
     dhJson= json.loads(file.read())
 
 x_axis = (1,0,0)
 y_axis = (0,1,0)
 z_axis = (0,0,1)
 
-with open(rospack.get_path('lab3') + '/urdf_parameters.yaml', 'w') as file:
+with open(rospack.get_path('lab4') + '/urdf_parameters.yaml', 'w') as file:
     for joint in dhJson:
         name = joint['name']
         a = joint['a']
