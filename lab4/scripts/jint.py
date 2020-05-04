@@ -10,7 +10,7 @@ import rospkg
 import json
 
 
-freq = 20
+freq = 30
 flag = 0
 
 start = [0, 0, 0]
