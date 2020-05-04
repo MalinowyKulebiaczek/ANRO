@@ -15,6 +15,22 @@ flag = 0
 
 start = [0, 0, 0]
 
+def linear_interpolation_fun(x0, x1, t0, t1):
+    def fun(t):
+        return x0 + ((x1-x0)/(t1-t0))*(t-t0)
+    return fun
+
+def spline_interpolation_fun(x0, x1, t0, t1):
+    def t_fun(t):
+        return (t-t0)/(t1-t0)
+    
+    a = -(x1-x0)
+    b = x1-x0
+
+    def fun(t):
+        return (1-t_fun(t))*x0 + t_fun(t)*x1 + t_fun(t)*(1-t_fun(t))*((1-t_fun(t))*a + t_fun(t)*b)
+    return fun
+
 def interpolate(data):
     if(data.time < 0):
         return ("Czas musi być większy od zera")
@@ -31,20 +47,27 @@ def interpolate(data):
     global start
     end = [data.j1, data.j2, data.j3]
 
-    change = start
-    step=[(end[0]-start[0])/(freq*data.time),(end[1]-start[1])/(freq*data.time),(end[2]-start[2])/(freq*data.time)]
+    pos = start
+    #step=[(end[0]-start[0])/(freq*data.time),(end[1]-start[1])/(freq*data.time),(end[2]-start[2])/(freq*data.time)]
+    lin_funcs = [
+            spline_interpolation_fun(start[0], end[0], 0, data.time),
+            spline_interpolation_fun(start[1], end[1], 0, data.time),
+            spline_interpolation_fun(start[2], end[2], 0, data.time)
+    ]
+
+    rate = rospy.Rate(freq) 
 
     for k in range(0, int(freq*data.time)+1):
-	    for i in range(0, 3):
-	        change[i]=change[i]+step[i]
-	        
-	        rate = rospy.Rate(freq) 
-            pose_str = JointState()
-            pose_str.header.stamp = rospy.Time.now()
-            pose_str.name = ['base_to_link1', 'link1_to_link2', 'link2_to_link3'] #wskazanie jointow
-            pose_str.position = [change[0], change[1], change[2]] #ruch jointow
-            pub.publish(pose_str)
-            rate.sleep()
+        t = float(k)/float(freq)
+        for i in range(0, 3):
+            pos[i]=lin_funcs[i](t)
+	    
+        pose_str = JointState()
+        pose_str.header.stamp = rospy.Time.now()
+        pose_str.name = ['base_to_link1', 'link1_to_link2', 'link2_to_link3'] #wskazanie jointow
+        pose_str.position = [pos[0], pos[1], pos[2]] #ruch jointow
+        pub.publish(pose_str)
+        rate.sleep()
 
     start = end
     return (str(data.j1)+" "+str(data.j2)+" "+str(data.j3))
