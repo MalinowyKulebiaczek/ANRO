@@ -11,7 +11,7 @@ if __name__ == "__main__":
     
     try:
         jint = rospy.ServiceProxy('jint', Jint)
-        resp1 = jint(0, 0, 0, 0.1)
+        resp1 = jint(0, 0, 0, 0.1, 'linear')
         print(resp1.status)
     except rospy.ServiceException, e:
         print ("Service call failed: %s"%e)

@@ -10,7 +10,7 @@ import rospkg
 import json
 
 
-freq = 50
+freq = 20
 flag = 0
 
 start = [0, 0, 0]
@@ -49,18 +49,27 @@ def interpolate(data):
 
     pos = start
     #step=[(end[0]-start[0])/(freq*data.time),(end[1]-start[1])/(freq*data.time),(end[2]-start[2])/(freq*data.time)]
-    lin_funcs = [
-            spline_interpolation_fun(start[0], end[0], 0, data.time),
-            spline_interpolation_fun(start[1], end[1], 0, data.time),
-            spline_interpolation_fun(start[2], end[2], 0, data.time)
-    ]
+    if(data.type == "linear"):
+        funcs = [
+                linear_interpolation_fun(start[0], end[0], 0, data.time),
+                linear_interpolation_fun(start[1], end[1], 0, data.time),
+                linear_interpolation_fun(start[2], end[2], 0, data.time)
+        ]
+    elif(data.type == "spline"):
+        funcs = [
+                spline_interpolation_fun(start[0], end[0], 0, data.time),
+                spline_interpolation_fun(start[1], end[1], 0, data.time),
+                spline_interpolation_fun(start[2], end[2], 0, data.time)
+        ]
+    else:
+        return ("Ostatni argument musi być 'linear' lub 'spline'")
 
     rate = rospy.Rate(freq) 
 
     for k in range(0, int(freq*data.time)+1):
         t = float(k)/float(freq)
         for i in range(0, 3):
-            pos[i]=lin_funcs[i](t)
+            pos[i]=funcs[i](t)
 	    
         pose_str = JointState()
         pose_str.header.stamp = rospy.Time.now()
