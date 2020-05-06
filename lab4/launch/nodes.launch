@@ -12,5 +12,6 @@
   <node name="NONKDL_DKIN" pkg="lab4" type="nonkdl.py" />
   <node name="KDL_DKIN" pkg="lab4" type="kdl.py"/>
   <node name="initial" pkg="lab4" type="initial.py" />
-
+  <node name="PathNodeJint" pkg="lab4" type="drawTrajJint.py" />
+  <node name="PathNodeOint" pkg="lab4" type="drawTrajOint.py" />
 </launch>
