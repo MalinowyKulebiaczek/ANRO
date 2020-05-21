@@ -176,8 +176,8 @@ Visualization Manager:
       Unreliable: false
       Value: false
     - Alpha: 1
-      Axes Length: 0.5
-      Axes Radius: 0.05000000074505806
+      Axes Length: 0.30000001192092896
+      Axes Radius: 0.029999999329447746
       Class: rviz/Pose
       Color: 255; 25; 0
       Enabled: true
